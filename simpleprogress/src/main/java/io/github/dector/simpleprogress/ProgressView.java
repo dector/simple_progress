@@ -36,7 +36,11 @@ public class ProgressView extends View {
 
     public void setValue(int value) {
         if (value < 0) {
-            return;
+            value = 0;
+        }
+
+        if (value > max) {
+            value = max;
         }
 
         this.value = value;
@@ -78,11 +82,12 @@ public class ProgressView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawLine(0, lineY, lineWidth, lineY, paint);
+        canvas.drawLine(lineY, lineY, lineWidth + lineY, lineY, paint);
     }
 
     private void recountProgressDrawable() {
-        lineWidth = Math.round(1f * getWidth() * value / max);
+        lineWidth = Math.round(1f * (getWidth() - 2*lineY) * value / max);
+
         invalidate();
     }
 }
